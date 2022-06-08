@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Exam | Sistem Ujian Akhir Nasional</title>
+  </head>
+  <script src="./database.js"></script>
+  <body>
+    <div
+      id="invalid"
+      style="
+        display: none;
+        color: white;
+        background-color: red;
+        height: max-content;
+        width: max-content;
+        padding-left: 3px;
+        padding-right: 3px;
+        text-align: center;
+        margin: auto;
+        margin-top: 3rem;
+      "
+      align="center"
+    >
+      <p>Akun anda tidak valid!</p>
+    </div>
+
+    <div id="welcome" style="display: none" align="center">
+      <div style="text-align: center; margin: auto; margin-top: 3rem">
+        <p id="welcome-text"></p>
+      </div>
+    </div>
+    <hr />
+
+    <div id="exam">
+      <div>
+        <p id="akun">Loading...</p>
+      </div>
+    </div>
+  </body>
+  <script>
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+
+    const username = urlParams.get("u");
+    const password = urlParams.get("p");
+    const kelas = (() => {
+      for (data of peserta) {
+        if (data.nama.toLowerCase() == username.toLowerCase() && data.nisn == password) {
+          return data.kelas;
+        }
+      }
+    })();
+
+    for (const i in peserta) {
+      if (peserta[i].nama.toLowerCase() == username.toLowerCase() && peserta[i].nisn == password) {
+        const welcome = document.getElementById("welcome");
+        welcome.style.display = "block";
+
+        const loading = setInterval(() => {
+          switch (welcome.innerText.length) {
+            case 0:
+              welcome.innerText = "W";
+              break;
+            case 1:
+              welcome.innerText = "wE";
+              break;
+            case 2:
+              welcome.innerText = "w3L";
+              break;
+            case 3:
+              welcome.innerText = "0elc";
+              break;
+            case 4:
+              welcome.innerText = "w0Lc0";
+              break;
+            case 5:
+              welcome.innerText = "W3lc0m";
+              break;
+            case 6:
+              welcome.innerText = "Welcome";
+              break;
+            default:
+              setTimeout(() => {
+                welcome.innerText = "Sistem Ujian Nasional";
+                uan.index();
+              }, 200);
+              clearInterval(loading);
+          }
+        }, 200);
+        break;
+      } else if (i >= peserta.length - 1) {
+        document.getElementById("invalid").style.display = "block";
+      }
+    }
+
+    class UAN {
+      index() {
+        document.getElementById("akun").innerHTML = `Nama: ${username}<br />NISN: ${password}<br />Kelas: ${kelas}`;
+      }
+    }
+
+    const uan = new UAN();
+  </script>
+</html>

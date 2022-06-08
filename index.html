@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ujian Akhir Nasional</title>
+  </head>
+  <body align="center">
+    <h3>Sistem Ujian Akhir Nasional</h3>
+    <div style="width: 100%; height: 1rem; margin-top: 3rem">
+      <p
+        id="info"
+        style="
+          color: white;
+          background-color: red;
+          width: max-content;
+          margin: auto;
+          padding-left: 1px;
+          padding-right: 1px;
+        "
+      ></p>
+    </div>
+    <div style="margin-top: 1rem; width: 100%; height: 10rem">
+      <div>
+        <div>
+          <p>Silahkan isi data diri anda untuk memulai ujian!</p>
+        </div>
+        <div align="center">
+          <table style="text-align: left">
+            <form action="exam.html" method="GET">
+              <tr>
+                <td>
+                  <label for="username">Nama: </label>
+                </td>
+                <td>
+                  <input type="text" id="username" onchange="login.check()" />
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label for="password">Password: </label>
+                </td>
+                <td>
+                  <input type="password" id="password" onchange="login.check()" />
+                </td>
+              </tr>
+            </form>
+          </table>
+          <br />
+          <input type="button" value="Masuk" onclick="login.login()" id="login-btn" disabled />
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="./database.js"></script>
+  <script>
+    class Login {
+      constructor() {
+        this.update_data();
+      }
+
+      update_data() {
+        this.username = document.getElementById("username");
+        this.password = document.getElementById("password");
+        this.info = document.getElementById("info");
+      }
+
+      check() {
+        document.getElementById("login-btn").disabled = true;
+        this.update_data();
+
+        if (!this.username.value) {
+          return (this.info.innerText = "Nama kamu belum diisi!");
+        } else if (!this.password.value) {
+          return (this.info.innerText = "Password kamu belum diisi!");
+        } else if (this.password.value.length < 8) {
+          return (this.info.innerText = "Password harus lebih dari 7 karakter");
+        }
+
+        this.info.innerText = "";
+        return (document.getElementById("login-btn").disabled = false);
+      }
+
+      login() {
+        return (document.location.href = `./exam.html?u=${this.username.value}&p=${this.password.value}`);
+      }
+    }
+
+    const login = new Login();
+  </script>
+</html>
