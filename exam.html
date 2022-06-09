@@ -7,6 +7,42 @@
     <title>Exam | Sistem Ujian Akhir Nasional</title>
   </head>
   <script src="./database.js"></script>
+  <script>
+    const token = [
+      {
+        mapel: "IPA",
+        token: generate_token(),
+      },
+      {
+        mapel: "MTK",
+        token: generate_token(),
+      },
+      {
+        mapel: "BIND",
+        token: generate_token(),
+      },
+      {
+        mapel: "BING",
+        token: generate_token(),
+      },
+    ];
+
+    function generate_token() {
+      return Math.floor(Math.random() * 10000) + 1;
+    }
+
+    function alert_text() {
+      let text = "";
+      for (const data of token) {
+        if (text.length != 0) text += "\n";
+        text += `Token Ujian ${data.mapel}: ${data.token}`;
+      }
+
+      return text;
+    }
+
+    alert(alert_text());
+  </script>
   <body>
     <div
       id="invalid"
@@ -37,6 +73,39 @@
     <div id="exam">
       <div>
         <p id="akun">Loading...</p>
+      </div>
+      <div align="center" style="margin-top: 6rem">
+        <p id="info" style="width: max-content; display: none">Masukkan token untuk memulai ujian!</p>
+      </div>
+      <div id="token-input" style="display: none" align="center">
+        <div style="margin: auto">
+          <div>
+            <table>
+              <tr>
+                <td>
+                  <label for="token">Token: </label>
+                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+              </tr>
+            </table>
+            <input type="password" id="token" />
+            <input
+              type="button"
+              value=">"
+              style="border-radius: 50%; height: 1.3rem; width: 1.3rem; text-align: center; border-width: 1px"
+              onclick="uan.start()"
+            />
+          </div>
+        </div>
+      </div>
+      <div id="qna" align="center">
+        <div>
+          <p id="question"></p>
+        </div>
+        <div id="radio-container" style="text-align: left; width: max-content"></div>
       </div>
     </div>
   </body>
@@ -97,8 +166,98 @@
     }
 
     class UAN {
+      constructor() {
+        this.answer = [];
+      }
+
       index() {
         document.getElementById("akun").innerHTML = `Nama: ${username}<br />NISN: ${password}<br />Kelas: ${kelas}`;
+        document.getElementById("info").style.display = "block";
+        document.getElementById("token-input").style.display = "block";
+      }
+
+      check_token() {
+        this.input_token = document.getElementById("token").value;
+
+        for (const data of token) {
+          if (data.token == this.input_token) {
+            return 0;
+          }
+        }
+        return 1;
+      }
+
+      get_question(mapel, no) {
+        const code = kode_mapel[mapel.mapel.toLowerCase()];
+        const question_list = soal[code.kode];
+
+        document.getElementById("question").innerText = `${no + 1}. ${question_list.daftar[no].pertanyaan}`;
+        const answer_option = (() => {
+          let option = ["A. ", "B. ", "C. ", "D. "];
+          const answerText = question_list.daftar[no].jawaban;
+
+          for (const text of answerText) {
+            let optionIndex = Math.floor(Math.random() * option.length);
+
+            while (option[optionIndex].length > 3) {
+              optionIndex = Math.floor(Math.random() * option.length);
+            }
+
+            option[optionIndex] += text;
+          }
+
+          return option;
+        })();
+
+        for (const answer of answer_option) {
+          let value = answer.split(" ");
+
+          let radiobox = document.createElement("input");
+          radiobox.type = "radio";
+          radiobox.id = value.shift();
+          radiobox.name = "answer";
+          radiobox.value = value.join(" ");
+
+          let label = document.createElement("label");
+          label.htmlFor = radiobox.id;
+
+          let desc = document.createTextNode(answer);
+          label.appendChild(desc);
+
+          let newline = document.createElement("br");
+
+          let container = document.getElementById("radio-container");
+          container.appendChild(radiobox);
+          container.appendChild(label);
+          container.appendChild(newline);
+        }
+      }
+
+      start() {
+        const info = document.getElementById("info");
+        if (this.check_token()) {
+          info.innerText = "Token tidak valid!";
+          info.style.color = "white";
+          info.style.backgroundColor = "red";
+
+          setTimeout(() => {
+            info.innerText = "Masukkan token untuk memulai ujian!";
+            info.style.color = "black";
+            info.style.backgroundColor = "white";
+          }, 5000);
+        } else {
+          const mapel = (() => {
+            for (const data of token) {
+              if (data.token == this.input_token) {
+                return data;
+              }
+            }
+          })();
+          document.getElementById("token-input").style.display = "none";
+          info.innerText = `Ujian ${mapel.mapel}`;
+
+          this.get_question(mapel, 0);
+        }
       }
     }
 

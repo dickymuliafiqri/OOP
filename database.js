@@ -27,7 +27,7 @@ const peserta = [
   { nama: "Zahravi Putra Baros", nisn: 3121101201, kelas: "IX" },
 ];
 
-const mapel = {
+const kode_mapel = {
   ipa: {
     kode: "ipa-ix",
   },
@@ -43,34 +43,45 @@ const mapel = {
 };
 
 const soal = {
-  "ipa-xii": {
+  "ipa-ix": {
     jumlah: 5,
     daftar: [
       {
         pertanyaan: "Tumbuhan yang menyimpan cadangan makanan di akar yaitu...",
         jawaban: ["Tebu", "Singkong", "Mangga", "Padi"],
-        kunci: "Singkong",
+        kunci: "53 69 6e 67 6b 6f 6e 67",
       },
       {
         pertanyaan: "Bagian paru-paru yang menjadi tempat terjadinya pertukaran O2 dan CO2 yaitu...",
         jawaban: ["Bronkus", "Bronkiolus", "Trakhea", "Alveolus"],
-        kunci: "Alveolus",
+        kunci: "41 6c 76 65 6f 6c 75 73",
       },
       {
         pertanyaan: "Jika tubuh kita kekurangan kalsium bisa mengakibatkan...",
         jawaban: ["Busung lapar", "Anemia", "Keropos tulang", "Sariawan"],
-        kunci: "Keropos tulang",
+        kunci: "4b 65 72 6f 70 6f 73 20 74 75 6c 61 6e 67",
       },
       {
         pertanyaan: "Benda akan menimbulkan gaya gesek yang besar bila memiliki permukaan...",
         jawaban: ["Halus", "Rata", "Kasar", "Licin"],
-        kunci: "Kasar",
+        kunci: "4b 61 73 61 72",
       },
       {
         pertanyaan: "Melindungi diri dengan cara memutuskan ekornya dilakukan hewan...",
         jawaban: ["Komodo", "Katak", "Cicak", "Ular"],
-        kunci: "Cicak",
+        kunci: "43 69 63 61 6b",
       },
     ],
   },
 };
+
+// https://stackoverflow.com/a/3745677
+function hex2a(hexx) {
+  const hexxx = hexx.replace(" ", "");
+  const hex = hexxx.toString(); //force conversion
+  let str = "";
+  for (let i = 0; i < hex.length; i += 2) {
+    str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+  }
+  return str;
+}
