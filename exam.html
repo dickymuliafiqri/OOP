@@ -106,6 +106,7 @@
           <p id="question"></p>
         </div>
         <div id="radio-container" style="text-align: left; width: max-content"></div>
+        <div style="position: fixed; width: 75%; left: 50%; margin-left: -37.5%; bottom: 3rem" id="index"></div>
       </div>
     </div>
   </body>
@@ -167,7 +168,7 @@
 
     class UAN {
       constructor() {
-        this.answer = [];
+        this.answer = {};
       }
 
       index() {
@@ -187,9 +188,19 @@
         return 1;
       }
 
+      clear_question() {
+        let radios = document.getElementById("radio-container");
+        let question = document.getElementById("question");
+        let index = document.getElementById("index");
+
+        question.innerHTML = radios.innerHTML = index.innerHTML = "";
+      }
+
       get_question(mapel, no) {
         const code = kode_mapel[mapel.mapel.toLowerCase()];
         const question_list = soal[code.kode];
+
+        this.clear_question();
 
         document.getElementById("question").innerText = `${no + 1}. ${question_list.daftar[no].pertanyaan}`;
         const answer_option = (() => {
@@ -218,6 +229,10 @@
           radiobox.name = "answer";
           radiobox.value = value.join(" ");
 
+          if (this.answer[mapel.mapel.toLowerCase()][no] == radiobox.value) {
+            radiobox.checked = true;
+          }
+
           let label = document.createElement("label");
           label.htmlFor = radiobox.id;
 
@@ -230,6 +245,31 @@
           container.appendChild(radiobox);
           container.appendChild(label);
           container.appendChild(newline);
+        }
+
+        for (let i = 1; i <= question_list.jumlah; i++) {
+          let button = document.createElement("input");
+          button.type = "button";
+          button.value = i;
+          button.style.border = "none";
+          button.style.cursor = "pointer";
+          button.style.backgroundColor = "white";
+          button.onclick = function () {
+            const selectedAnswer = document.querySelector('input[name="answer"]:checked');
+            if (selectedAnswer) {
+              uan.answer[mapel.mapel.toLowerCase()][no] = selectedAnswer.value;
+            }
+
+            uan.get_question(mapel, i - 1);
+          };
+
+          if (i == no + 1) {
+            // button.style.fontWeight = "bold";
+            button.disabled = true;
+          }
+
+          let index = document.getElementById("index");
+          index.appendChild(button);
         }
       }
 
@@ -255,6 +295,8 @@
           })();
           document.getElementById("token-input").style.display = "none";
           info.innerText = `Ujian ${mapel.mapel}`;
+
+          this.answer[mapel.mapel.toLowerCase()] = [];
 
           this.get_question(mapel, 0);
         }
