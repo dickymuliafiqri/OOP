@@ -77,7 +77,7 @@ const soal = {
 
 // https://stackoverflow.com/a/3745677
 function hex2a(hexx) {
-  const hexxx = hexx.replace(" ", "");
+  const hexxx = hexx.replaceAll(" ", "");
   const hex = hexxx.toString(); //force conversion
   let str = "";
   for (let i = 0; i < hex.length; i += 2) {

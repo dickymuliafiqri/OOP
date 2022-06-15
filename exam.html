@@ -99,6 +99,9 @@
               onclick="uan.start()"
             />
           </div>
+          <div style="margin-top: 2rem">
+            <input type="button" value="Lihat Hasil Ujian" />
+          </div>
         </div>
       </div>
       <div id="qna" align="center">
@@ -106,6 +109,9 @@
           <p id="question"></p>
         </div>
         <div id="radio-container" style="text-align: left; width: max-content"></div>
+        <div style="bottom: 5rem; position: fixed; width: 75%; left: 50%; margin-left: -37.5%">
+          <input type="button" value="Submit" style="display: none" id="submit" onclick="uan.calculate_score()" />
+        </div>
         <div style="position: fixed; width: 75%; left: 50%; margin-left: -37.5%; bottom: 3rem" id="index"></div>
       </div>
     </div>
@@ -167,9 +173,12 @@
     }
 
     class UAN {
-      constructor() {
-        this.answer = {};
-      }
+      answer = {};
+      score = {};
+      subject = {
+        name: "",
+        code: "",
+      };
 
       index() {
         document.getElementById("akun").innerHTML = `Nama: ${username}<br />NISN: ${password}<br />Kelas: ${kelas}`;
@@ -177,32 +186,45 @@
         document.getElementById("token-input").style.display = "block";
       }
 
+      show_token_input() {
+        document.getElementById("info").innerText = "Masukkan token untuk memulai ujian!";
+        this.index();
+      }
+
       check_token() {
         this.input_token = document.getElementById("token").value;
 
         for (const data of token) {
           if (data.token == this.input_token) {
-            return 0;
+            if (this.score[data.mapel.toLowerCase()] == undefined) {
+              return 0;
+            }
           }
         }
         return 1;
       }
 
       clear_question() {
-        let radios = document.getElementById("radio-container");
         let question = document.getElementById("question");
+        let radios = document.getElementById("radio-container");
         let index = document.getElementById("index");
 
         question.innerHTML = radios.innerHTML = index.innerHTML = "";
       }
 
       get_question(mapel, no) {
-        const code = kode_mapel[mapel.mapel.toLowerCase()];
+        const code = kode_mapel[mapel];
         const question_list = soal[code.kode];
 
         this.clear_question();
+        this.subject.code = code.kode;
 
+        let submitButton = document.getElementById("submit");
+
+        // Write question
         document.getElementById("question").innerText = `${no + 1}. ${question_list.daftar[no].pertanyaan}`;
+
+        // Generate options
         const answer_option = (() => {
           let option = ["A. ", "B. ", "C. ", "D. "];
           const answerText = question_list.daftar[no].jawaban;
@@ -220,6 +242,7 @@
           return option;
         })();
 
+        // Show options
         for (const answer of answer_option) {
           let value = answer.split(" ");
 
@@ -228,8 +251,14 @@
           radiobox.id = value.shift();
           radiobox.name = "answer";
           radiobox.value = value.join(" ");
+          radiobox.onclick = function () {
+            const selectedAnswer = document.querySelector('input[name="answer"]:checked');
+            if (selectedAnswer) {
+              uan.answer[mapel][no] = selectedAnswer.value;
+            }
+          };
 
-          if (this.answer[mapel.mapel.toLowerCase()][no] == radiobox.value) {
+          if (this.answer[mapel][no] == radiobox.value) {
             radiobox.checked = true;
           }
 
@@ -247,6 +276,7 @@
           container.appendChild(newline);
         }
 
+        // Generate index of questions
         for (let i = 1; i <= question_list.jumlah; i++) {
           let button = document.createElement("input");
           button.type = "button";
@@ -255,11 +285,6 @@
           button.style.cursor = "pointer";
           button.style.backgroundColor = "white";
           button.onclick = function () {
-            const selectedAnswer = document.querySelector('input[name="answer"]:checked');
-            if (selectedAnswer) {
-              uan.answer[mapel.mapel.toLowerCase()][no] = selectedAnswer.value;
-            }
-
             uan.get_question(mapel, i - 1);
           };
 
@@ -271,7 +296,26 @@
           let index = document.getElementById("index");
           index.appendChild(button);
         }
+
+        // Show submit button
+        submitButton.style.display = no + 1 >= question_list.jumlah ? "block" : "none";
       }
+
+      calculate_score() {
+        const question_list = soal[this.subject.code];
+        this.score[this.subject.name] = 0;
+
+        for (let i in question_list.daftar) {
+          if (hex2a(question_list.daftar[i].kunci) == this.answer[this.subject.name][i]) {
+            this.score[this.subject.name] += 1;
+          }
+        }
+
+        document.getElementById("qna").style.display = "none";
+        this.show_token_input();
+      }
+
+      get_score() {}
 
       start() {
         const info = document.getElementById("info");
@@ -289,14 +333,16 @@
           const mapel = (() => {
             for (const data of token) {
               if (data.token == this.input_token) {
-                return data;
+                return data.mapel.toLowerCase();
               }
             }
           })();
           document.getElementById("token-input").style.display = "none";
-          info.innerText = `Ujian ${mapel.mapel}`;
+          info.innerText = `Ujian ${mapel.toUpperCase()}`;
 
-          this.answer[mapel.mapel.toLowerCase()] = [];
+          this.subject.name = mapel;
+          this.answer[mapel] = [];
+          this.score[mapel] = 0;
 
           this.get_question(mapel, 0);
         }
