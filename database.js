@@ -78,7 +78,7 @@ const soal = {
     daftar: [
       {
         pertanyaan:
-          "Banyak kalangan menyebut Rudy Hartono sebagai maestro bulu tangkis dunia.\n\nMakna kata bergaris bawah adalah ....",
+          "Banyak kalangan menyebut Rudy Hartono sebagai <u>maestro</u> bulu tangkis dunia.\n\nMakna kata bergaris bawah adalah ....",
         jawaban: [
           "orang yang hebat dalam bidang yang digeluti",
           "orang yang ahli dan berprestasi di bidang tertentu",
