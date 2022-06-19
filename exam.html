@@ -100,7 +100,7 @@
             />
           </div>
           <div style="margin-top: 2rem">
-            <input type="button" value="Lihat Hasil Ujian" />
+            <input type="button" value="Lihat Hasil Ujian" onclick="uan.get_score()" />
           </div>
         </div>
       </div>
@@ -315,7 +315,9 @@
         this.show_token_input();
       }
 
-      get_score() {}
+      get_score() {
+        window.open(`./print.html${queryString}&s=${JSON.stringify(this.score)}`);
+      }
 
       start() {
         const info = document.getElementById("info");

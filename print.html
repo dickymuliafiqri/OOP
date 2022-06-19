@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Exam | Cetak Rapot</title>
+    <script src="./database.js"></script>
+  </head>
+  <body>
+    <header style="text-align: center">
+      <h2>LAPORAN HASIL BELAJAR SISWA<br />PENILAIAN AKHIR NASIONAL (UAN)</h2>
+      <hr />
+    </header>
+    <table style="line-height: 0; font-weight: bold">
+      <tr>
+        <td>
+          <label for="school-name">Nama Sekolah</label>
+        </td>
+        <td>
+          <p id="school-name">: SMP KAYANGAN 10</p>
+        </td>
+      </tr>
+      <tr>
+        <td><label for="school-address">Alamat Sekolah</label></td>
+        <td><p id="school-address">: Jl. Kayangan, Langit</p></td>
+      </tr>
+      <tr>
+        <td>
+          <label for="name">Nama Siswa</label>
+        </td>
+        <td>
+          <p id="name"></p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label for="nisn">NISN</label>
+        </td>
+        <td>
+          <p id="nisn"></p>
+        </td>
+      </tr>
+    </table>
+    <div style="margin-top: 6rem; text-align: center">
+      <table id="result" style="margin-left: auto; margin-right: auto"></table>
+      <div style="width: 30%; margin: auto">
+        <hr />
+        <p id="final-result"></p>
+      </div>
+    </div>
+  </body>
+  <script>
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+
+    const username = urlParams.get("u");
+    const password = urlParams.get("p");
+    const score = JSON.parse(urlParams.get("s"));
+    const kelas = (() => {
+      for (data of peserta) {
+        if (data.nama.toLowerCase() == username.toLowerCase() && data.nisn == password) {
+          return data.kelas;
+        }
+      }
+    })();
+
+    for (const i in peserta) {
+      if (peserta[i].nama.toLowerCase() == username.toLowerCase() && peserta[i].nisn == password) {
+        let total_score = 0;
+        document.getElementById("name").innerText += `: ${peserta[i].nama}`;
+        document.getElementById("nisn").innerText += `: ${peserta[i].nisn}`;
+
+        Object.entries(score).forEach((subject) => {
+          total_score += parseInt(subject[1]) * 20;
+          document.getElementById("result").innerHTML += `<tr><td><p>${subject[0].toUpperCase()}</p></td><td><p>: ${
+            subject[1]
+          }</p></td></tr>`;
+        });
+
+        document.getElementById("final-result").innerText = `Hasil Ujian: ${total_score / 10}`;
+        break;
+      }
+
+      window.print();
+    }
+  </script>
+</html>

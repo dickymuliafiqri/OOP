@@ -73,6 +73,23 @@ const soal = {
       },
     ],
   },
+  "bind-ix": {
+    jumlah: 1,
+    daftar: [
+      {
+        pertanyaan:
+          "Banyak kalangan menyebut Rudy Hartono sebagai maestro bulu tangkis dunia.\n\nMakna kata bergaris bawah adalah ....",
+        jawaban: [
+          "orang yang hebat dalam bidang yang digeluti",
+          "orang yang ahli dan berprestasi di bidang tertentu",
+          "orang yang mempunyai nama besar karena kesuksesannya",
+          "orang yang menjuarai suatu pertandingan dan tidak terkalahkan",
+        ],
+        kunci:
+          "6f 72 61 6e 67 20 79 61 6e 67 20 61 68 6c 69 20 64 61 6e 20 62 65 72 70 72 65 73 74 61 73 69 20 64 69 20 62 69 64 61 6e 67 20 74 65 72 74 65 6e 74 75",
+      },
+    ],
+  },
 };
 
 // https://stackoverflow.com/a/3745677
