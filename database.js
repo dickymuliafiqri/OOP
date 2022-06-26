@@ -27,70 +27,80 @@ const peserta = [
   { nama: "Zahravi Putra Baros", nisn: 3121101201, kelas: "IX" },
 ];
 
-const kode_mapel = {
-  ipa: {
-    kode: "ipa-ix",
-  },
-  bind: {
-    kode: "bind-ix",
-  },
-  bing: {
-    kode: "bing-ix",
-  },
-  mtk: {
-    kode: "mtk-ix",
-  },
-};
+class Subject {
+  kode_mapel = {
+    ipa: {
+      kode: "ipa-ix",
+    },
+    bind: {
+      kode: "bind-ix",
+    },
+    bing: {
+      kode: "bing-ix",
+    },
+    mtk: {
+      kode: "mtk-ix",
+    },
+  };
 
-const soal = {
-  "ipa-ix": {
-    jumlah: 5,
-    daftar: [
-      {
-        pertanyaan: "Tumbuhan yang menyimpan cadangan makanan di akar yaitu...",
-        jawaban: ["Tebu", "Singkong", "Mangga", "Padi"],
-        kunci: "53 69 6e 67 6b 6f 6e 67",
-      },
-      {
-        pertanyaan: "Bagian paru-paru yang menjadi tempat terjadinya pertukaran O2 dan CO2 yaitu...",
-        jawaban: ["Bronkus", "Bronkiolus", "Trakhea", "Alveolus"],
-        kunci: "41 6c 76 65 6f 6c 75 73",
-      },
-      {
-        pertanyaan: "Jika tubuh kita kekurangan kalsium bisa mengakibatkan...",
-        jawaban: ["Busung lapar", "Anemia", "Keropos tulang", "Sariawan"],
-        kunci: "4b 65 72 6f 70 6f 73 20 74 75 6c 61 6e 67",
-      },
-      {
-        pertanyaan: "Benda akan menimbulkan gaya gesek yang besar bila memiliki permukaan...",
-        jawaban: ["Halus", "Rata", "Kasar", "Licin"],
-        kunci: "4b 61 73 61 72",
-      },
-      {
-        pertanyaan: "Melindungi diri dengan cara memutuskan ekornya dilakukan hewan...",
-        jawaban: ["Komodo", "Katak", "Cicak", "Ular"],
-        kunci: "43 69 63 61 6b",
-      },
-    ],
-  },
-  "bind-ix": {
-    jumlah: 1,
-    daftar: [
-      {
-        pertanyaan:
-          "Banyak kalangan menyebut Rudy Hartono sebagai <u>maestro</u> bulu tangkis dunia.\n\nMakna kata bergaris bawah adalah ....",
-        jawaban: [
-          "orang yang hebat dalam bidang yang digeluti",
-          "orang yang ahli dan berprestasi di bidang tertentu",
-          "orang yang mempunyai nama besar karena kesuksesannya",
-          "orang yang menjuarai suatu pertandingan dan tidak terkalahkan",
-        ],
-        kunci:
-          "6f 72 61 6e 67 20 79 61 6e 67 20 61 68 6c 69 20 64 61 6e 20 62 65 72 70 72 65 73 74 61 73 69 20 64 69 20 62 69 64 61 6e 67 20 74 65 72 74 65 6e 74 75",
-      },
-    ],
-  },
-};
+  soal = {
+    "ipa-ix": {
+      jumlah: 5,
+      daftar: [
+        {
+          pertanyaan: "Tumbuhan yang menyimpan cadangan makanan di akar yaitu...",
+          jawaban: ["Tebu", "Singkong", "Mangga", "Padi"],
+          kunci: "53 69 6e 67 6b 6f 6e 67",
+        },
+        {
+          pertanyaan: "Bagian paru-paru yang menjadi tempat terjadinya pertukaran O2 dan CO2 yaitu...",
+          jawaban: ["Bronkus", "Bronkiolus", "Trakhea", "Alveolus"],
+          kunci: "41 6c 76 65 6f 6c 75 73",
+        },
+        {
+          pertanyaan: "Jika tubuh kita kekurangan kalsium bisa mengakibatkan...",
+          jawaban: ["Busung lapar", "Anemia", "Keropos tulang", "Sariawan"],
+          kunci: "4b 65 72 6f 70 6f 73 20 74 75 6c 61 6e 67",
+        },
+        {
+          pertanyaan: "Benda akan menimbulkan gaya gesek yang besar bila memiliki permukaan...",
+          jawaban: ["Halus", "Rata", "Kasar", "Licin"],
+          kunci: "4b 61 73 61 72",
+        },
+        {
+          pertanyaan: "Melindungi diri dengan cara memutuskan ekornya dilakukan hewan...",
+          jawaban: ["Komodo", "Katak", "Cicak", "Ular"],
+          kunci: "43 69 63 61 6b",
+        },
+      ],
+    },
+    "bind-ix": {
+      jumlah: 1,
+      daftar: [
+        {
+          pertanyaan:
+            "Banyak kalangan menyebut Rudy Hartono sebagai <u>maestro</u> bulu tangkis dunia.\n\nMakna kata bergaris bawah adalah ....",
+          jawaban: [
+            "orang yang hebat dalam bidang yang digeluti",
+            "orang yang ahli dan berprestasi di bidang tertentu",
+            "orang yang mempunyai nama besar karena kesuksesannya",
+            "orang yang menjuarai suatu pertandingan dan tidak terkalahkan",
+          ],
+          kunci:
+            "6f 72 61 6e 67 20 79 61 6e 67 20 61 68 6c 69 20 64 61 6e 20 62 65 72 70 72 65 73 74 61 73 69 20 64 69 20 62 69 64 61 6e 67 20 74 65 72 74 65 6e 74 75",
+        },
+      ],
+    },
+  };
+
+  constructor(subject_code) {
+    if (this.kode_mapel[subject_code]) {
+      return {
+        ...this.soal[this.kode_mapel[subject_code].kode],
+      };
+    }
+  }
+}
 
 // https://stackoverflow.com/a/3745677
 function hex2a(hexx) {

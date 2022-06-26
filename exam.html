@@ -213,21 +213,19 @@
       }
 
       get_question(mapel, no) {
-        const code = kode_mapel[mapel];
-        const question_list = soal[code.kode];
+        this.question_list = new Subject(mapel);
 
         this.clear_question();
-        this.subject.code = code.kode;
 
         let submitButton = document.getElementById("submit");
 
         // Write question
-        document.getElementById("question").innerText = `${no + 1}. ${question_list.daftar[no].pertanyaan}`;
+        document.getElementById("question").innerText = `${no + 1}. ${this.question_list.daftar[no].pertanyaan}`;
 
         // Generate options
         const answer_option = (() => {
           let option = ["A. ", "B. ", "C. ", "D. "];
-          const answerText = question_list.daftar[no].jawaban;
+          const answerText = this.question_list.daftar[no].jawaban;
 
           for (const text of answerText) {
             let optionIndex = Math.floor(Math.random() * option.length);
@@ -277,7 +275,7 @@
         }
 
         // Generate index of questions
-        for (let i = 1; i <= question_list.jumlah; i++) {
+        for (let i = 1; i <= this.question_list.jumlah; i++) {
           let button = document.createElement("input");
           button.type = "button";
           button.value = i;
@@ -298,15 +296,14 @@
         }
 
         // Show submit button
-        submitButton.style.display = no + 1 >= question_list.jumlah ? "block" : "none";
+        submitButton.style.display = no + 1 >= this.question_list.jumlah ? "block" : "none";
       }
 
       calculate_score() {
-        const question_list = soal[this.subject.code];
         this.score[this.subject.name] = 0;
 
-        for (let i in question_list.daftar) {
-          if (hex2a(question_list.daftar[i].kunci) == this.answer[this.subject.name][i]) {
+        for (let i in this.question_list.daftar) {
+          if (hex2a(this.question_list.daftar[i].kunci) == this.answer[this.subject.name][i]) {
             this.score[this.subject.name] += 1;
           }
         }
