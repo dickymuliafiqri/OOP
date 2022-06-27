@@ -37,11 +37,13 @@
         if (text.length != 0) text += "\n";
         text += `Token Ujian ${data.mapel}: ${data.token}`;
       }
+      text += "\n\nToken dapat dilihat kembali di console.";
 
       return text;
     }
 
     alert(alert_text());
+    console.log(token);
   </script>
   <body>
     <div
@@ -221,7 +223,7 @@
         let submitButton = document.getElementById("submit");
 
         // Write question
-        document.getElementById("question").innerText = `${no + 1}. ${this.question_list.daftar[no].pertanyaan}`;
+        document.getElementById("question").innerHTML = `${no + 1}. ${this.question_list.daftar[no].pertanyaan}`;
 
         // Generate options
         const answer_option = (() => {
