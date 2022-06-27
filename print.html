@@ -12,34 +12,28 @@
       <h2>LAPORAN HASIL BELAJAR SISWA<br />PENILAIAN AKHIR NASIONAL (UAN)</h2>
       <hr />
     </header>
-    <table style="line-height: 0; font-weight: bold">
+    <table style="font-weight: bold">
       <tr>
         <td>
           <label for="school-name">Nama Sekolah</label>
         </td>
-        <td>
-          <p id="school-name">: SMP KAYANGAN 10</p>
-        </td>
+        <td id="school-name">: SMP KAYANGAN 10</td>
       </tr>
       <tr>
         <td><label for="school-address">Alamat Sekolah</label></td>
-        <td><p id="school-address">: Jl. Kayangan, Langit</p></td>
+        <td id="school-address">: Jl. Kayangan, Langit</td>
       </tr>
       <tr>
         <td>
           <label for="name">Nama Siswa</label>
         </td>
-        <td>
-          <p id="name"></p>
-        </td>
+        <td id="name"></td>
       </tr>
       <tr>
         <td>
           <label for="nisn">NISN</label>
         </td>
-        <td>
-          <p id="nisn"></p>
-        </td>
+        <td id="nisn"></td>
       </tr>
     </table>
     <div style="margin-top: 6rem; text-align: center">
@@ -73,9 +67,9 @@
 
         Object.entries(score).forEach((subject) => {
           total_score += parseInt(subject[1]) * 20;
-          document.getElementById("result").innerHTML += `<tr><td><p>${subject[0].toUpperCase()}</p></td><td><p>: ${
+          document.getElementById("result").innerHTML += `<tr><td>${subject[0].toUpperCase()}</td><td>: ${
             subject[1]
-          }</p></td></tr>`;
+          }</td></tr>`;
         });
 
         document.getElementById("final-result").innerText = `Hasil Ujian: ${total_score / 10}`;
